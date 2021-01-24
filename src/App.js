@@ -122,6 +122,14 @@ function App() {
     setIsEditing(false);
   };
 
+  const subtractResin = () => {
+    if (currentResin >= 20) {
+      const newRechargedDate = rechargedDate + 20 * resinRefillTime * 60 * 1000;
+      setRechargedDate(newRechargedDate);
+      localStorage.setItem('rechargedDate', newRechargedDate.toString());
+    }
+  };
+
   const calculateDelta = rechargedDate => {
     const now = new Date();
     const deltaTime = rechargedDate - now.getTime();
@@ -294,6 +302,7 @@ function App() {
           <Flex
             background="#00000070"
             p={5}
+            mb={4}
             fontSize="1.5rem"
             borderRadius={12}
             flexDir="column"
@@ -301,6 +310,19 @@ function App() {
           >
             <Text color="#D2BC93">Fully replenished in</Text>
             <Text color="#FFFFFF">{msToTime(delta)}</Text>
+            <Button
+              w="100%"
+              colorScheme="blue"
+              color="#D2BC93"
+              mt="4"
+              variant="outline"
+              _hover={{ bg: '#D2BC9320' }}
+              _active={{ bg: '#D2BC9330' }}
+              onClick={subtractResin}
+              disabled={currentResin < 20}
+            >
+              Subtract 20
+            </Button>
           </Flex>
         </Animated>
       </AppBox>
