@@ -124,7 +124,13 @@ function App() {
 
   const subtractResin = () => {
     if (currentResin >= 20) {
-      const newRechargedDate = rechargedDate + 20 * resinRefillTime * 60 * 1000;
+      let newRechargedDate;
+      if (delta <= 0) {
+        const now = new Date();
+        newRechargedDate = now.getTime() + 20 * resinRefillTime * 60 * 1000;
+      } else {
+        newRechargedDate = rechargedDate + 20 * resinRefillTime * 60 * 1000;
+      }
       setRechargedDate(newRechargedDate);
       localStorage.setItem('rechargedDate', newRechargedDate.toString());
     }
