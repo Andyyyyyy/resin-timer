@@ -122,7 +122,6 @@ function App() {
     const resinDelta = maxResin - resinValue;
     const remainingTime = 1000 * 60 * resinDelta * resinRefillTime; //milliseconds
     const rechargedDate = now.getTime() + remainingTime;
-    console.log(rechargedDate);
     setRechargedDate(rechargedDate);
     localStorage.setItem('rechargedDate', rechargedDate.toString());
 
