@@ -88,9 +88,15 @@ const inputToNumber = input => {
   }
 };
 
+const formatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+};
+
 function App() {
   const [currentResin, setCurrentResin] = useState(maxResin);
   const [rechargedDate, setRechargedDate] = useState(0);
+  const [rechargedDateString, setRechargedDateString] = useState('');
   const [delta, setDelta] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -116,6 +122,7 @@ function App() {
     const resinDelta = maxResin - resinValue;
     const remainingTime = 1000 * 60 * resinDelta * resinRefillTime; //milliseconds
     const rechargedDate = now.getTime() + remainingTime;
+    console.log(rechargedDate);
     setRechargedDate(rechargedDate);
     localStorage.setItem('rechargedDate', rechargedDate.toString());
 
@@ -179,6 +186,9 @@ function App() {
   useEffect(() => {
     if (isPageVisible) {
       calculateDelta(rechargedDate);
+      setRechargedDateString(
+        new Date(rechargedDate).toLocaleTimeString([], formatOptions)
+      );
     }
   }, [isPageVisible, rechargedDate]);
 
@@ -315,7 +325,12 @@ function App() {
             alignItems="baseline"
           >
             <Text color="#D2BC93">Fully replenished in</Text>
-            <Text color="#FFFFFF">{msToTime(delta)}</Text>
+            <Flex alignItems="baseline" justify="space-between" w="100%">
+              <Text color="#FFFFFF">{msToTime(delta)}</Text>
+              <Text color="#DDDDDD" fontSize="md">
+                {delta > 0 && rechargedDateString}
+              </Text>
+            </Flex>
             <Button
               w="100%"
               colorScheme="blue"
